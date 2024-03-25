@@ -9,19 +9,17 @@ async function setup(){
     // Uses Dependency Injection design pattern
     const quoteInstance = new QuoteService();
     const quote = await quoteInstance.getQuote();
-    console.log(`\nQUOTE: ${quote} \n`);
+    console.log(`\nQUOTE FROM API: \n${quote}\n`);
 
+    await HabitModel.deleteAllHabits();
 
-    const hModel = new HabitModel();
-    await hModel.deleteAllHabits();
-
-    const habit1 = await hModel.createHabit('Weight Training', Frequency.Weekly, 3);
-    const habit2 = await hModel.createHabit('Running for 20 mins', Frequency.Daily);
+    const habit1 = await HabitModel.createHabit('Weight Training', Frequency.Weekly, 3);
+    const habit2 = await HabitModel.createHabit('Running for 20 mins', Frequency.Daily);
     
     habit2.name = 'Running for 30 mins';
-    await hModel.updateHabit(habit2);
+    await HabitModel.updateHabit(habit2);
 
-    const list = await hModel.listHabits();
+    const list = await HabitModel.listHabits();
 } 
 
 setup();

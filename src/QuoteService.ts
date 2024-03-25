@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 /**
- * QuoteService class uses Dependency Injection (DI) design pattern where components are given their dependencies rather than creating them internally.
- * This allows to create new instances wherever needed and pass them to the components that require them. 
- * 
- * This way I make sure that for an app instance I am caching the generated quote and re-using it in all views. If I need to generate a new quote,
- * I can create a new instance of this class and use it directly in that component. Otherwise, I will always be passing the same instance of this class to my components using Dependency Injection.
+ * QuoteService class uses Dependency Injection (DI) design pattern where components are given their dependencies rather than creating them internally. This provides flexibility in managing the lifecycle of quotes. It passes down the instance of QuoteService to other components for accessing the same cached quote. This way it decouples the quote caching logic from the component's implementation, making it easier to manage and test Quotes functionality.
  */
 class QuoteService {
     private cachedQuote: string | null = null;

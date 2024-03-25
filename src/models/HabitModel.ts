@@ -6,12 +6,10 @@ export enum Frequency {
     Weekly = "WEEKLY"
 }
 
-export class Habit {
-    constructor(public id: string, public name: string, public frequency: Frequency, public frequencyCount: number, public progress: number) {}
-} 
-
 export class HabitModel{
-    public async createHabit(name: string, frequency: Frequency, frequencyCount?: number): Promise<Habit> {
+    constructor(public id: string, public name: string, public frequency: Frequency, public frequencyCount: number, public progress: number) {}
+
+    public static async createHabit(name: string, frequency: Frequency, frequencyCount?: number): Promise<HabitModel> {
         try {
             const dbInstance = await Database.getInstance();
 
@@ -25,14 +23,14 @@ export class HabitModel{
 
             console.log(`\nHabit "${result[0].name}" created successfully!`);
 
-            return result[0] as Habit;
+            return result[0] as HabitModel;
         } catch (error) {
             console.error('Error creating habit:', error);
             throw error;
         }
     }
 
-    public async deleteHabit(id: string): Promise<void> {
+    public static async deleteHabit(id: string): Promise<void> {
         try {
             const dbInstance = await Database.getInstance();
             const result = await dbInstance.executeQuery(`
@@ -45,7 +43,7 @@ export class HabitModel{
         }
     }
 
-    public async deleteAllHabits(): Promise<void> {
+    public static async deleteAllHabits(): Promise<void> {
         try {
             const dbInstance = await Database.getInstance();
             const result = await dbInstance.executeQuery(`
@@ -58,7 +56,7 @@ export class HabitModel{
         }
     }
 
-    public async listHabits(): Promise<Habit[]> {
+    public static async listHabits(): Promise<HabitModel[]> {
         try {
             const dbInstance = await Database.getInstance();
             const result = await dbInstance.executeQuery(`
@@ -68,14 +66,14 @@ export class HabitModel{
             console.log(`\nListing all habits... \n`);
             console.log(result);
 
-            return result as Habit[];
+            return result as HabitModel[];
         } catch (error) {
             console.error('Error getting list of habits');
             throw error;
         }
     }
 
-    public async updateHabit(habit: Habit): Promise<Habit> {
+    public static async updateHabit(habit: HabitModel): Promise<HabitModel> {
         try {
             const dbInstance = await Database.getInstance();
             const result = await dbInstance.executeQuery(`
@@ -89,7 +87,7 @@ export class HabitModel{
             `);
             console.log(`\nHabit id:${result[0].id} updated successfully!`);
 
-            return result[0] as Habit;
+            return result[0] as HabitModel;
         } catch (error) {
             console.error('Error updating habit:', habit.id);
             throw error;
