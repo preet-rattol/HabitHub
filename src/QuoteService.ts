@@ -12,7 +12,7 @@ class QuoteService {
         }
 
         const response = await axios.get('https://zenquotes.io/api/random');
-        const quote = response.data[0].q;
+        const quote = `${response.data[0].q} -${response.data[0].a}`;
 
         this.cachedQuote = quote;
         return quote;

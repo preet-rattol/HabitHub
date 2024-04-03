@@ -1,25 +1,18 @@
 import { Database } from "./Database";
 import QuoteService from "./QuoteService";
-import { Frequency, HabitModel } from "./models/HabitModel";
+import HabitController from "./controllers/HabitController";
+import { ReminderController } from "./controllers/ReminderController";
 
 async function setup(){
-    // Uses Singleton design pattern
-    const dbInstance = await Database.getInstance();
+    // // Uses Singleton design pattern
+    // const dbInstance = await Database.getInstance();
 
-    // Uses Dependency Injection design pattern
-    const quoteInstance = new QuoteService();
-    const quote = await quoteInstance.getQuote();
-    console.log(`\nQUOTE FROM API: \n${quote}\n`);
+    const reminderController = new ReminderController();
+    await reminderController.triggerReminders();
 
-    await HabitModel.deleteAllHabits();
-
-    const habit1 = await HabitModel.createHabit('Weight Training', Frequency.Weekly, 3);
-    const habit2 = await HabitModel.createHabit('Running for 20 mins', Frequency.Daily);
-    
-    habit2.name = 'Running for 30 mins';
-    await HabitModel.updateHabit(habit2);
-
-    const list = await HabitModel.listHabits();
+    const quoteService = new QuoteService();
+    const habitController = new HabitController(quoteService);
+    await habitController.run();
 } 
 
 setup();

@@ -1,5 +1,5 @@
 import * as sql from 'mssql';
-import { dbConfig } from '../config';
+import { dbConfig } from './config';
 
 /**
  * Database class uses the Singleton pattern, to ensures that only one instance of itself is created and provides a global point of access to that instance through getInstance() method.
@@ -13,12 +13,7 @@ class Database {
   /**
    * To implement the Singleton pattern, I made the constructor private and provide a static method to access the single instance, ensuring that subsequent calls to the constructor return the same instance. 
    */
-  private constructor() {
-    console.log('/////////////////////////////////');
-    console.log(`Database Server: ${dbConfig.server}`);
-    console.log(`Database Name: ${dbConfig.database}`);
-    console.log('/////////////////////////////////');
-  }
+  private constructor() {}
 
    /**
    * The getInstance method is made static and serves as a factory method to retrieve the singleton instance of Database.
@@ -34,19 +29,17 @@ class Database {
 
   private async connect(): Promise<void> {
     try {
-      console.log(`Connecting to Database...`);
-      if (!this.connected) {
+      // console.log(`Connecting to Database...`);
+      if (!this.poolconnection) {
         this.poolconnection = await sql.connect(dbConfig);
         this.connected = true;
-        console.log('Database connection SUCCESSFUL');
-      } else {
-        console.log('Database ALREADY CONNECTED');
+        // console.log('Database connection SUCCESSFUL');
       }
     } catch (error) {
-      if(this.retryCount <= 3){
+      if(this.retryCount <= 5){
         this.retryCount++;
-        console.log(`Retrying to connect to Database ${this.retryCount} try:`);
-        this.connect();
+        console.log(`Retrying Database connection (${this.retryCount} try)...`);
+        await this.connect();
       }else{
         console.error(`ERROR connecting to database: ${JSON.stringify(error)}`);
       }
