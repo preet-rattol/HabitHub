@@ -27,6 +27,10 @@ class Database {
     return Database.instance;
   }
 
+  /**
+   * This method connects to the Azure sql database using dbConfig and stores the connection in poolconnection
+   * I have also implemented a retrying mechanism which will try 5 times to connect to the database before logging an error.
+   */
   private async connect(): Promise<void> {
     try {
       // console.log(`Connecting to Database...`);
@@ -46,6 +50,9 @@ class Database {
     }
   }
 
+  /**
+   * This method will close the connection to Azure Sql database
+   */
   public async disconnect(): Promise<void> {
     try {
       if (this.poolconnection) {
@@ -57,6 +64,11 @@ class Database {
     }
   }
 
+  /**
+   * This method takes a SQL query from user and returns the results after executing it.
+   * @param query - sql query
+   * @returns Sql RecordSet
+   */
   public async executeQuery(query: string): Promise<any> {
     if (this.poolconnection) {
       const request = this.poolconnection.request();

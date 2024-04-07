@@ -6,6 +6,10 @@ import axios from 'axios';
 class QuoteService {
     private cachedQuote: string | null = null;
 
+    /**
+     * It checks the if there is already a cached quote. If not found, then it will call the zenquotes API to get a new quote and return it after storing in cache.
+     * @returns quote text from the cache
+     */
     public async getQuote(): Promise<string> {
         if (this.cachedQuote) {
             return this.cachedQuote;

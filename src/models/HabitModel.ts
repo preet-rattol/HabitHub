@@ -1,6 +1,9 @@
 import { Database } from "../Database";
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * We are using MVC pattern in this class as it is our model for Habits
+ */
 export class HabitModel{
     constructor(public id?: string, public name?: string, public progress?: number, public startDate?: Date) {}
 

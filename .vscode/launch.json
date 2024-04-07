@@ -5,19 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ts-node",
             "type": "node",
             "request": "launch",
-            "args": [
-                "${relativeFile}"
+            "name": "Ts Debugger",
+            "skipFiles": [
+                "<node_internals>/**"
             ],
-            "runtimeArgs": [
-                "-r",
-                "ts-node/register"
-            ],
-            "cwd": "${workspaceRoot}",
-            "protocol": "inspector",
-            "internalConsoleOptions": "openOnSessionStart"
+            "program": "${workspaceFolder}/dist/app.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
         }
     ]
 }

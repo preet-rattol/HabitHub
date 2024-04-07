@@ -7,9 +7,18 @@ export enum ReminderDuration {
     Every5Minutes = 1 * 5
 }
 
+/**
+ * We are using MVC pattern in this class as it is our model for Reminders
+ */
 export class ReminderModel{
     constructor(public id?: string, public habitId?: string, public duration?: ReminderDuration) {}
 
+    /**
+     * Create a new reminder in Azure SQL database
+     * @param habitId - habitId to which this reminder belongs
+     * @param duration - reminder duration, after every {n} minutes it will be triggered
+     * @returns 
+     */
     public async createReminder(habitId: string, duration: ReminderDuration): Promise<ReminderModel> {
         try {
             const dbInstance = await Database.getInstance();
@@ -35,6 +44,11 @@ export class ReminderModel{
         }
     }
 
+    /**
+     * Deletes a reminder for a habit
+     * @param habitId habitId for which reminder should be deleted
+     * @returns 
+     */
     public async deleteReminder(habitId: string): Promise<void> {
         try {
             const dbInstance = await Database.getInstance();
@@ -54,6 +68,10 @@ export class ReminderModel{
         }
     }
 
+    /**
+     * Returns back a list of all reminders for all
+     * @returns ReminderModel[]
+     */
     public async getAllReminders(): Promise<ReminderModel[]> {
         try {
             const dbInstance = await Database.getInstance();
